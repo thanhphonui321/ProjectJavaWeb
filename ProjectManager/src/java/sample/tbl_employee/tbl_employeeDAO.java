@@ -26,9 +26,9 @@ public class tbl_employeeDAO implements Serializable {
         try {
             conn = DBConnection.makeConnection();
             if (conn != null) {
-                String sql = "select emp.employeeID as ID, emp.name as Name, dep.name as Department, emp.salary as Salary \n" +
-"from tbl_employee emp inner join tbl_department dep on emp.depID = dep.depID\n" +
-"where emp.employeeID = ?";
+                String sql = "select emp.employeeID as ID, emp.name as Name, dep.name as Department, emp.salary as Salary \n"
+                        + "from tbl_employee emp inner join tbl_department dep on emp.depID = dep.depID\n"
+                        + "where emp.employeeID = ?";
                 ps = conn.prepareStatement(sql);
                 ps.setString(1, empID);
                 rs = ps.executeQuery();
@@ -52,5 +52,36 @@ public class tbl_employeeDAO implements Serializable {
             }
         }
         return null;
+    }
+
+    public int countTotalEmp() throws SQLException, NamingException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            conn = DBConnection.makeConnection();
+            if (conn != null) {
+                String sql = "select COUNT(*) as total\n"
+                        + "from tbl_employee\n"
+                        + "where manager = ?";
+                ps = conn.prepareStatement(sql);
+                ps.setBoolean(1, false);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    return rs.getInt("total");
+                }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return -1;
     }
 }

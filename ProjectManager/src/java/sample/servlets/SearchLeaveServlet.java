@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author nguyenducthanh
  */
-@WebServlet(name = "ManageServlet", urlPatterns = {"/ManageServlet"})
+@WebServlet(name = "SearchLeaveServlet", urlPatterns = {"/SearchLeaveServlet"})
 public class SearchLeaveServlet extends HttpServlet {
 
     /**

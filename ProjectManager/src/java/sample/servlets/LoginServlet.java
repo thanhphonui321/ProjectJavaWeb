@@ -15,7 +15,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import sample.tbl_account.tbl_accountDAO;
+import sample.tbl_employee.showEmpInfoDTO;
+import sample.tbl_employee.tbl_employeeDAO;
 
 /**
  *
@@ -25,8 +28,8 @@ import sample.tbl_account.tbl_accountDAO;
 public class LoginServlet extends HttpServlet {
 
     private final String invalidPage = "loginErr.html";
-    private final String SearchLeaveServlet = "SearchLeaveServlet";
-    private final String showEmpInfor = "ShowEmpInfoServlet";
+    private final String searchLeave = "searchLeave.jsp";
+    private final String requestLeavePage = "requestLeave.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,11 +50,15 @@ public class LoginServlet extends HttpServlet {
         try {
             tbl_accountDAO daoAccount = new tbl_accountDAO();
             int result = daoAccount.checkLogin(username, password);
+            tbl_employeeDAO daoEmp = new tbl_employeeDAO();
+            showEmpInfoDTO dto = daoEmp.getEmpInfoInRequestLeave(username);
+            HttpSession session = request.getSession();
+            session.setAttribute("EMPINFO", dto);
             if (result!= -1){
                 if (result == 0) {
-                    url = showEmpInfor;
+                    url = requestLeavePage;
                 } else if (result == 1) {
-                    url = SearchLeaveServlet;
+                    url = searchLeave;
                 }
             }
             
@@ -61,8 +68,7 @@ public class LoginServlet extends HttpServlet {
         } catch (NamingException ex) {
             ex.printStackTrace();
         } finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+            response.sendRedirect(url);
             out.close();
         }
     }
