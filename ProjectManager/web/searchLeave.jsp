@@ -22,6 +22,7 @@
             <input type="submit" value="Search" />
         </form>
         <c:set var="listSearch" value="${sessionScope.SEARCHLIST}"/>
+        <c:set var="firstTime" value="${requestScope.FIRSTTIMESEARCH}"/>
         <c:if test="${not empty listSearch}">
             <table border="1">
                 <thead>
@@ -33,6 +34,7 @@
                         <th>Address</th>
                         <th>Email</th>
                         <th>Phone</th>
+                        <th>Accept</th>
                         <th>Request reason</th>
                         <th>Reject reason</th>
                     </tr>
@@ -56,8 +58,8 @@
             </table>
 
         </c:if>
-        <c:if test="${empty listLeaves}">
-            <h1 style="color: blue">You don't have any leaves</h1>
+        <c:if test="${firstTime ne 1 and empty listSearch}">
+            <h1 style="color: blue">There is no leaves</h1>
         </c:if>
         
     

@@ -60,6 +60,7 @@ public class LoginServlet extends HttpServlet {
                 } else if (result == 1) {
                     int totalAccount = daoEmp.countTotalEmp();
                     session.setAttribute("TOTALACCOUNT", totalAccount);
+                    request.setAttribute("FIRSTTIMESEARCH", 1);
                     url = searchLeave;
                 }
             }
@@ -70,7 +71,8 @@ public class LoginServlet extends HttpServlet {
         } catch (NamingException ex) {
             ex.printStackTrace();
         } finally {
-            response.sendRedirect(url);
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
             out.close();
         }
     }
