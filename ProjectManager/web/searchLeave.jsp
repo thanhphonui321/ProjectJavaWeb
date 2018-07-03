@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,6 +13,53 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <p style="font-weight: bold; display: inline; font-size: 1.5em">Department Name: </p> ${sessionScope.EMPINFO.depName}<br><br>
+        <p style="font-weight: bold; display: inline; font-size: 1.5em">Total of employee:</p> ${sessionScope.TOTALACCOUNT}<br><br>
+        <form action="searchLeave" method="POST">
+            (Date in format: dd-MM-yyyy)<br>
+            From <input type="text" name="txtFrom" value="" />&nbsp;&nbsp;&nbsp;&nbsp;
+            To <input type="text" name="txtTo" value="" />&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="submit" value="Search" />
+        </form>
+        <c:set var="listSearch" value="${sessionScope.SEARCHLIST}"/>
+        <c:if test="${not empty listSearch}">
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Employee ID</th>
+                        <th>Name</th>
+                        <th>Salary</th>
+                        <th>Address</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Request reason</th>
+                        <th>Reject reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="dto" items="${listSearch}" varStatus="counter">
+                        <tr>
+                            <td>${counter.count}</td>
+                            <td>${dto.empID}</td>
+                            <td>${dto.name}</td>
+                            <td>${dto.salary}</td>
+                            <td>${dto.address}</td>
+                            <td>${dto.email}</td>
+                            <td>${dto.phone}</td>
+                            <td>${dto.accept}</td>
+                            <td>${dto.requestReason}</td>
+                            <td> <input type="text" name="txtRejectReason" value="${dto.rejectReason}" /> </td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+
+        </c:if>
+        <c:if test="${empty listLeaves}">
+            <h1 style="color: blue">You don't have any leaves</h1>
+        </c:if>
+        
+    
     </body>
 </html>

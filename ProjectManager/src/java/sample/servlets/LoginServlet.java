@@ -58,6 +58,8 @@ public class LoginServlet extends HttpServlet {
                 if (result == 0) {
                     url = requestLeavePage;
                 } else if (result == 1) {
+                    int totalAccount = daoEmp.countTotalEmp();
+                    session.setAttribute("TOTALACCOUNT", totalAccount);
                     url = searchLeave;
                 }
             }

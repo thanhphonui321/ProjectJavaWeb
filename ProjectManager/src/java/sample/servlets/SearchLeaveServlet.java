@@ -7,11 +7,19 @@ package sample.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import sample.tbl_leave.tbl_leaveDAO;
+import sample.tbl_leave.viewLeavesAsManagerDTO;
 
 /**
  *
@@ -19,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "SearchLeaveServlet", urlPatterns = {"/SearchLeaveServlet"})
 public class SearchLeaveServlet extends HttpServlet {
+    private final String searchLeavePage = "searchLeave.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,11 +42,26 @@ public class SearchLeaveServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        String from = request.getParameter("txtFrom");
+        String to = request.getParameter("txtTo");
         try {
-            /* TODO output your page here. You may use following sample code. */
-            
-        }
-        finally {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            java.util.Date utilFrom = dateFormat.parse(from);
+            java.util.Date utilTo = dateFormat.parse(to);
+            java.sql.Date sqlFrom = new java.sql.Date(utilFrom.getTime());
+            java.sql.Date sqlTo = new java.sql.Date(utilTo.getTime());
+            tbl_leaveDAO dao = new tbl_leaveDAO();
+            List<viewLeavesAsManagerDTO> dto = dao.getLeavesForSearch(sqlFrom, sqlTo);
+            HttpSession session = request.getSession();
+            session.setAttribute("SEARCHLIST", dto);
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (NamingException ex) {
+            ex.printStackTrace();
+        } finally {
+            response.sendRedirect(searchLeavePage);
             out.close();
         }
     }
