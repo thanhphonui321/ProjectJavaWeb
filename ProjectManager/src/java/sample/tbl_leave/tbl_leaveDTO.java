@@ -5,13 +5,14 @@
  */
 package sample.tbl_leave;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author nguyenducthanh
  */
-public class tbl_leaveDTO {
+public class tbl_leaveDTO implements Serializable{
     private int leaveID;
     private Date fromDate;
     private Date toDate;

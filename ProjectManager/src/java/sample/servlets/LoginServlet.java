@@ -28,7 +28,7 @@ import sample.tbl_employee.tbl_employeeDAO;
 public class LoginServlet extends HttpServlet {
 
     private final String invalidPage = "loginErr.html";
-    private final String searchLeave = "searchLeave.jsp";
+    private final String preSearchLeave = "PreSearchLeave";
     private final String requestLeavePage = "requestLeave.jsp";
 
     /**
@@ -58,10 +58,8 @@ public class LoginServlet extends HttpServlet {
                 if (result == 0) {
                     url = requestLeavePage;
                 } else if (result == 1) {
-                    int totalAccount = daoEmp.countTotalEmp();
-                    session.setAttribute("TOTALACCOUNT", totalAccount);
-                    request.setAttribute("FIRSTTIMESEARCH", 1);
-                    url = searchLeave;
+                    
+                    url = preSearchLeave;
                 }
             }
             
@@ -71,8 +69,7 @@ public class LoginServlet extends HttpServlet {
         } catch (NamingException ex) {
             ex.printStackTrace();
         } finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+            response.sendRedirect(url);
             out.close();
         }
     }

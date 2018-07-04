@@ -84,4 +84,29 @@ public class tbl_employeeDAO implements Serializable {
         }
         return -1;
     }
+
+    public int updateEmpDepSalary(String empID, String depID, float salary) throws SQLException, NamingException{
+        Connection conn = null;
+        PreparedStatement ps = null;
+        int result = 0;
+        try {
+            conn = DBConnection.makeConnection();
+            if (conn != null) {
+                String sql = "update tbl_employee set depID = ?, salary = ? where employeeID = ?";
+                ps = conn.prepareStatement(sql);
+                ps.setString(1, depID);
+                ps.setFloat(2, salary);
+                ps.setString(3, empID);
+                result = ps.executeUpdate();
+            }
+        } finally {
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return result;
+    }
 }

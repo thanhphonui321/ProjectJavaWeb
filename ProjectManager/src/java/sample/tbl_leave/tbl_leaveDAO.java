@@ -100,25 +100,27 @@ public class tbl_leaveDAO implements Serializable {
         try {
             conn = DBConnection.makeConnection();
             if (conn != null) {
-                String sql = "select e.employeeID, e.name, e.salary, e.address, e.email, e.phone, l.accept,l.requestReason,l.rejectReason\n" +
-"from tbl_employee e inner join tbl_leave l on e.employeeID = l.empID\n" +
-"where l.fromDate = ? AND l.toDate = ?\n" +
-"order by l.leaveID";
+                String sql = "select l.leaveID, e.employeeID, e.name, e.salary, e.address, e.email, e.phone, l.accept,l.requestReason,l.rejectReason, d.name as depName\n"
+                        + "from (tbl_employee e inner join tbl_leave l on e.employeeID = l.empID) inner join tbl_department d on d.depID=e.depID \n"
+                        + "where l.fromDate = ? AND l.toDate = ?\n"
+                        + "order by l.leaveID";
                 ps = conn.prepareStatement(sql);
                 ps.setDate(1, fromDate);
                 ps.setDate(2, toDate);
                 rs = ps.executeQuery();
                 while (rs.next()) {
+                    String leaveID = rs.getString("leaveID");
                     String empID = rs.getString("employeeID");
                     String name = rs.getString("name");
                     float salary = rs.getFloat("salary");
                     String address = rs.getString("address");
                     String email = rs.getString("email");
                     String phone = rs.getString("phone");
+                    String depName = rs.getString("depName");
                     boolean accept = rs.getBoolean("accept");
                     String requestReason = rs.getString("requestReason");
                     String rejectReason = rs.getString("rejectReason");
-                    viewLeavesAsManagerDTO dto = new viewLeavesAsManagerDTO(empID, name, salary, address, email, phone, accept, requestReason, rejectReason);                    
+                    viewLeavesAsManagerDTO dto = new viewLeavesAsManagerDTO(leaveID, empID, name, salary, address, email, phone, depName, accept, requestReason, rejectReason);
                     result.add(dto);
                 }
             }
@@ -135,5 +137,31 @@ public class tbl_leaveDAO implements Serializable {
         }
         return result;
     }
-    
+
+    public int updateAcceptLeave(boolean accept, String rejectReason, int leaveID) throws SQLException, NamingException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        int result = 0;
+        try {
+            conn = DBConnection.makeConnection();
+            if (conn != null) {
+                String sql = "update tbl_leave set accept = ?, rejectReason = ? where leaveID = ?";
+                ps = conn.prepareStatement(sql);
+                ps.setBoolean(1, accept);
+                ps.setString(2, rejectReason);
+                ps.setInt(3, leaveID);
+                result = ps.executeUpdate();
+            }
+        } finally {
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return result;
+
+    }
 }
+

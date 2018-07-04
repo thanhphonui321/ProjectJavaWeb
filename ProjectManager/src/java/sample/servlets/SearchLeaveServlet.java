@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.naming.NamingException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -45,23 +46,27 @@ public class SearchLeaveServlet extends HttpServlet {
         String from = request.getParameter("txtFrom");
         String to = request.getParameter("txtTo");
         try {
+            HttpSession session = request.getSession();
+            session.setAttribute("SEARCHLIST", null);
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            dateFormat.setLenient(false);
             java.util.Date utilFrom = dateFormat.parse(from);
             java.util.Date utilTo = dateFormat.parse(to);
             java.sql.Date sqlFrom = new java.sql.Date(utilFrom.getTime());
             java.sql.Date sqlTo = new java.sql.Date(utilTo.getTime());
             tbl_leaveDAO dao = new tbl_leaveDAO();
             List<viewLeavesAsManagerDTO> dto = dao.getLeavesForSearch(sqlFrom, sqlTo);
-            HttpSession session = request.getSession();
             session.setAttribute("SEARCHLIST", dto);
         } catch (ParseException ex) {
+            request.setAttribute("FAULT", "Wrong date");
             ex.printStackTrace();
         } catch (SQLException ex) {
             ex.printStackTrace();
         } catch (NamingException ex) {
             ex.printStackTrace();
         } finally {
-            response.sendRedirect(searchLeavePage);
+            RequestDispatcher rd = request.getRequestDispatcher(searchLeavePage);
+            rd.forward(request, response);
             out.close();
         }
     }

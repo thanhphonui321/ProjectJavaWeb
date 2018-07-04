@@ -12,12 +12,14 @@ import java.io.Serializable;
  * @author nguyenducthanh
  */
 public class viewLeavesAsManagerDTO implements Serializable{
+    private String leaveID;
     private String empID;
     private String name;
     private float salary;
     private String address;
     private String email;
     private String phone;
+    private String depName;
     private boolean accept;
     private String requestReason;
     private String rejectReason;
@@ -25,13 +27,15 @@ public class viewLeavesAsManagerDTO implements Serializable{
     public viewLeavesAsManagerDTO() {
     }
 
-    public viewLeavesAsManagerDTO(String empID, String name, float salary, String address, String email, String phone, boolean accept, String requestReason, String rejectReason) {
+    public viewLeavesAsManagerDTO(String leaveID, String empID, String name, float salary, String address, String email, String phone, String depName, boolean accept, String requestReason, String rejectReason) {
+        this.leaveID = leaveID;
         this.empID = empID;
         this.name = name;
         this.salary = salary;
         this.address = address;
         this.email = email;
         this.phone = phone;
+        this.depName = depName;
         this.accept = accept;
         this.requestReason = requestReason;
         this.rejectReason = rejectReason;
@@ -40,9 +44,13 @@ public class viewLeavesAsManagerDTO implements Serializable{
     
     
 
+    
+    
+
     /**
      * @return the empID
      */
+    
     public String getEmpID() {
         return empID;
     }
@@ -165,6 +173,34 @@ public class viewLeavesAsManagerDTO implements Serializable{
      */
     public void setAccept(boolean accept) {
         this.accept = accept;
+    }
+
+    /**
+     * @return the leaveID
+     */
+    public String getLeaveID() {
+        return leaveID;
+    }
+
+    /**
+     * @param leaveID the leaveID to set
+     */
+    public void setLeaveID(String leaveID) {
+        this.leaveID = leaveID;
+    }
+
+    /**
+     * @return the depName
+     */
+    public String getDepName() {
+        return depName;
+    }
+
+    /**
+     * @param depName the depName to set
+     */
+    public void setDepName(String depName) {
+        this.depName = depName;
     }
     
     
