@@ -13,6 +13,9 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <form action="logout" method="POST">
+            <input type="submit" value="Log out" name="btnLogout" />
+        </form><br><br>
         <p style="font-weight: bold; display: inline; font-size: 1.5em">Department Name: </p> ${sessionScope.EMPINFO.depName}<br><br>
         <p style="font-weight: bold; display: inline; font-size: 1.5em">Total of employee:</p> ${sessionScope.TOTALACCOUNT}<br><br>
         <form action="searchLeave" method="POST">

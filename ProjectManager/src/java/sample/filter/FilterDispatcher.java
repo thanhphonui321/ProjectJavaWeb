@@ -130,12 +130,15 @@ public class FilterDispatcher implements Filter {
                     url = resource;
                 }
             }
+
+            HttpSession session = req.getSession();
             
-//            HttpSession session = req.getSession();
-//            String empIDSession = (String) session.getAttribute("EmployeeID");
-//            if (url != loginServlet && empIDSession == null && url != loginErr) {
-//                url = loginPage;
-//            }
+            if (session.getAttribute("EMPINFO") == null) {
+                if (!url.equals(loginServlet) && !url.equals(loginErr) && !url.equals(loginPage)) {
+                    url = loginPage;
+                }
+            }
+
             if (url != null) {
                 RequestDispatcher rd = req.getRequestDispatcher(url);
                 rd.forward(request, response);

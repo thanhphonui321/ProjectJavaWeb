@@ -102,7 +102,7 @@ public class tbl_leaveDAO implements Serializable {
             if (conn != null) {
                 String sql = "select l.leaveID, e.employeeID, e.name, e.salary, e.address, e.email, e.phone, l.accept,l.requestReason,l.rejectReason, d.name as depName\n"
                         + "from (tbl_employee e inner join tbl_leave l on e.employeeID = l.empID) inner join tbl_department d on d.depID=e.depID \n"
-                        + "where l.fromDate = ? AND l.toDate = ?\n"
+                        + "WHERE DATEDIFF(day,?, l.fromDate ) >= 0 AND DATEDIFF(day , l.toDate, ?) >= 0"
                         + "order by l.leaveID";
                 ps = conn.prepareStatement(sql);
                 ps.setDate(1, fromDate);

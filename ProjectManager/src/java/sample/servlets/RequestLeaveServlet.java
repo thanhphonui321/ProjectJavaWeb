@@ -10,6 +10,8 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -54,7 +56,9 @@ public class RequestLeaveServlet extends HttpServlet {
             dateFormat.setLenient(false);
             java.util.Date utilDateFrom = dateFormat.parse(from);
             java.util.Date utilDateTo = dateFormat.parse(to);
-            System.out.println(utilDateFrom);
+            if (utilDateFrom.compareTo(utilDateTo) > 0){
+                throw new ParseException("Wrong day", 0);
+            }
             java.sql.Date sqlDateFrom = new java.sql.Date(utilDateFrom.getTime());
             java.sql.Date sqlDateTo = new java.sql.Date(utilDateTo.getTime());
             tbl_leaveDAO dao = new tbl_leaveDAO();
@@ -71,7 +75,7 @@ public class RequestLeaveServlet extends HttpServlet {
         } catch (NamingException ex) {
             request.setAttribute("FAULT", "Connect failed, please try again");
             ex.printStackTrace();
-        } finally {
+        }  finally {
             if (url == viewAllLeavesServlet){
                 response.sendRedirect(url);
             }

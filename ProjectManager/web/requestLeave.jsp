@@ -13,6 +13,9 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <form action="logout" method="POST">
+            <input type="submit" value="Log out" name="btnLogout" />
+        </form>
         <h1>Request Leave</h1>
         <c:set var="empInfo" value="${sessionScope.EMPINFO}"/>
         Employee ID: ${empInfo.employeeID}<br>
@@ -22,8 +25,8 @@
         Leave Date <br>
         <form action="requestLeave" method="POST" id="requestLeaveForm">       
             (Date in format : dd-MM-yyyy)<br>
-            From <input type="text" name="txtFrom" value="" /> 
-            To <input type="text" name="txtTo" value="" /><br><br>
+            From <input type="text" name="txtFrom" value="${param.txtFrom}" /> 
+            To <input type="text" name="txtTo" value="${param.txtTo}" /><br><br>
             Reason  <textarea rows="4" cols="50" name="txtReason" form="requestLeaveForm"></textarea> <br><br>
             <input type="submit" value="Request" /> 
         </form>
