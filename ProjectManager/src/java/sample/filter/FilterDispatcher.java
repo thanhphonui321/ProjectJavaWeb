@@ -117,6 +117,7 @@ public class FilterDispatcher implements Filter {
         String uri = req.getRequestURI();
         String url = loginPage;
         try {
+            // lay url
             int lastIndex = uri.lastIndexOf("/");
             String resource = uri.substring(lastIndex + 1);
             if (resource.length() > 0) {
@@ -131,6 +132,7 @@ public class FilterDispatcher implements Filter {
                 }
             }
 
+            // check session, cookie
             HttpSession session = req.getSession();
             
             if (session.getAttribute("EMPINFO") == null) {
@@ -139,6 +141,8 @@ public class FilterDispatcher implements Filter {
                 }
             }
 
+            // check cookies
+            
             if (url != null) {
                 RequestDispatcher rd = req.getRequestDispatcher(url);
                 rd.forward(request, response);

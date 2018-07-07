@@ -27,7 +27,7 @@
             (Date in format : dd-MM-yyyy)<br>
             From <input type="text" name="txtFrom" value="${param.txtFrom}" /> 
             To <input type="text" name="txtTo" value="${param.txtTo}" /><br><br>
-            Reason  <textarea rows="4" cols="50" name="txtReason" form="requestLeaveForm"></textarea> <br><br>
+            Reason  <textarea rows="4" cols="50" name="txtReason" form="requestLeaveForm">${param.txtReason}</textarea> <br><br>
             <input type="submit" value="Request" /> 
         </form>
         <c:if test="${not empty requestScope.FAULT}">

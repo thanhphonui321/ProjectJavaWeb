@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import javax.naming.NamingException;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -54,15 +53,14 @@ public class LoginServlet extends HttpServlet {
             showEmpInfoDTO dto = daoEmp.getEmpInfoInRequestLeave(username);
             HttpSession session = request.getSession();
             session.setAttribute("EMPINFO", dto);
-            if (result!= -1){
+            if (result != -1) {
                 if (result == 0) {
                     url = requestLeavePage;
                 } else if (result == 1) {
-                    
+
                     url = preSearchLeave;
                 }
             }
-            
 
         } catch (SQLException ex) {
             ex.printStackTrace();
