@@ -11,14 +11,41 @@
         <action name="tryAgain">
             <result>login.html</result>
         </action>
-        <action name="login" class="sample.struts2.login.LoginAction" > 
-            <result name="success">search.jsp</result>
-            <result name="fail">invalid.html</result>
+        <action name="login" class="sample.strut2.login.LoginAction" > 
+             <result name="success">search.jsp</result>
+            <result name="fail" type="redirect">invalid.html</result>
         </action>
         
-        <action name="searchLastName" class="sample.struts2.searchLastName.SearchLastNameAction">
+        <action name="searchLastName" class="sample.strut2.searchLastName.SearchLastNameAction">
             <result name="success">search.jsp</result>
         </action>
 
+        <action name="delete" class="sample.strut2.delete.DeleteAction">
+            <result name="success" type="redirectAction">
+                <param name="actionName">searchLastName</param>
+                <param name="searchValue">${lastSearchValue}</param>
+            </result>
+            <result name ="fail" type="redirect">errDelete.html</result>
+        </action>
+        
+        <action name="updateAccount" class="sample.strut2.updateAccount.UpdateAccountAction">
+            <result name="success" type="redirectAction">
+                <param name="actionName">searchLastName</param>
+                <param name="searchValue">${lastSearchValue}</param>
+            </result>
+            <result name="fail" type="redirect">
+                updateAccountErr.html
+            </result>
+        </action> 
+        
+        <action name="createAccount" class="sample.strut2.createAccount.CreateAccountAction">
+            <exception-mapping exception="java.sql.SQLException" result="input" />
+            <result name="success">login.html</result>
+            <result name="fail">createAccountErr.html</result>
+            <result name="input">createNewAccount.jsp</result>
+        </action>
+        <action name="signUp">
+            <result>createNewAccount.jsp</result>
+        </action>
     </package>
 </struts>
